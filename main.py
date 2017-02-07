@@ -16,13 +16,42 @@ def rent_item(trans):
     Display the items available to rent from. Allows the customer to select the
     item of their choice and the quantity of that item.
     """
+    rental_fees = {'castle_bouncer': 100,
+                   'sports_bouncer': 100,
+                   'disney_princess_bouncer': 100,
+                   '16"_wave_pool_slide': 175,
+                   'dolphin_slide': 175,
+                   'giant_slip_and_dip': 175,
+                   'elephant_bouncer': 225,
+                   'jurassic_adventure_course': 225,
+                   'yellow_slide_and_pool_combo': 225}
+    purchase_fees = {'castle_bouncer': 400,
+                     'sports_bouncer': 400,
+                     'disney_princess_bouncer': 400,
+                     '16"_wave_pool_slide': 550,
+                     'dolphin_slide': 550,
+                     'giant_slip_and_dip': 550,
+                     'elephant_bouncer': 625,
+                     'jurassic_adventure_course': 625,
+                     'yellow_slide_and_pool_combo': 625}
+    tax = 1.07
     if trans == 'rent':
-        options = input(
-            'Select one of the following:\nHOUSES\nCastle Bouncer (7)\tSports Bouncer (4)\tDisney Princess Bouncer (3)\nWATER SLIDES\n16’ Wave Pool Slide (4)\tDolphin Slide (5)\tGiant Slip and Dip (2)\nCOMBOS\nElephant Bouncer (6)\tJurassic Adventure Course (2)\tYRP Slide and Pool Combo (5)\n').lower(
-            ).strip()
-        how_many = input('Quantity:').strip()
-        how_long = input(
-            'How long are you wanting to rent this item for?').strip()
+        print('Please select one of the following:')
+        for key, value in rental_fees.items():
+            key = key.replace('_', ' ').title()
+            print('{0} - ${1}'.format(key, value))
+        options = input().strip().lower().replace(' ', '_')
+        how_many = int(input('Quantity:').strip())
+        how_long = int(input(
+            'How long are you wanting to rent this item for?').strip())
+        total = (rental_fees[options] * how_long + purchase_fees[options] / 10
+                 ) * how_many * tax
+        receipt = (
+            '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
+            '\n' + str(how_many) + '\t' + options + '\n'
+            'Rent -- ' + str(how_long) + '\n'
+            '\t\tTotal: ${0:.2f}'.format(total))
+        return receipt
 
 
 def purchase_item(trans):
@@ -30,11 +59,39 @@ def purchase_item(trans):
     Display the items available to purchase from. Allows the customer to select
     the item of their choice and the quantity of that item.
     """
+    rental_fees = {'castle_bouncer': 100,
+                   'sports_bouncer': 100,
+                   'disney_princess_bouncer': 100,
+                   '16"_wave_pool_slide': 175,
+                   'dolphin_slide': 175,
+                   'giant_slip_and_dip': 175,
+                   'elephant_bouncer': 225,
+                   'jurassic_adventure_course': 225,
+                   'yellow_slide_and_pool_combo': 225}
+    purchase_fees = {'castle_bouncer': 400,
+                     'sports_bouncer': 400,
+                     'disney_princess_bouncer': 400,
+                     '16"_wave_pool_slide': 550,
+                     'dolphin_slide': 550,
+                     'giant_slip_and_dip': 550,
+                     'elephant_bouncer': 625,
+                     'jurassic_adventure_course': 625,
+                     'yellow_slide_and_pool_combo': 625}
+    tax = 1.07
     if trans == 'purchase':
-        options = input(
-            'Select one of the following:\nHOUSES\nCastle Bouncer (7)\tSports Bouncer (4)\tDisney Princess Bouncer (3)\nWATER SLIDES\n16’ Wave Pool Slide (4)\tDolphin Slide (5)\tGiant Slip and Dip (2)\nCOMBOS\nElephant Bouncer (6)\tJurassic Adventure Course (2)\tYRP Slide and Pool Combo (5)\n').lower(
-            ).strip()
-        how_many = input('Quantity:').strip()
+        print('Please select one of the following:')
+        for key, value in purchase_fees.items():
+            key = key.replace('_', ' ').title()
+            print('{0} - ${1}'.format(key, value))
+        options = input().strip().lower().replace(' ', '_')
+        how_many = int(input('Quantity:').strip())
+        total = purchase_fees[options] * how_many * tax
+        receipt = (
+            '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
+            '\n' + str(how_many) + '\t' + options + '\n'
+            'Purchased -- ' + str(how_many) + '\n'
+            '\t\tTotal: ${0:.2f}'.format(total))
+        return receipt
 
 #
 # def return_item():
@@ -50,11 +107,10 @@ def purchase_item(trans):
 #     """
 #
 #
-# def test_total_sales_cost():
+# def total_sales_cost():
 #     """ str -> float
 #     Returns the price (including the tax, 7%) calculated of the items selected.
 #     """
-#
 #
 # def update_inventory():
 #     """ str -> None
@@ -71,23 +127,4 @@ if __name__ == '__main__':
             'Which transaction would you like to complete? (Enter RENT, RETURN, PURCHASE, or REPLACE)\n').strip(
             ).lower()
         print(rent_item(trans))
-    # if who == 'customer':
-    #     print('Welcome to Bounce Into Fun!')
-    #     trans = input(
-    #         'Which transaction would you like to complete? (Enter RENT, RETURN, PURCHASE, or REPLACE)').strip(
-    #         ).lower()
-    #     if trans == 'rent':
-    #         options = input(
-    #             'Select one of the following:\nHOUSES\t\tWATER SLIDES\t\tCOMBOS\n').lower(
-    #             ).strip()
-    #         # display = # category options (3 of them w/ stock num) and price
-    #         choice = input('Which one would you like?').strip().lower()
-    #         how_many = input('Quantity:').strip()
-    #         how_long = input(
-    #             'How long are you wanting to rent this item for?').strip()
-    #             if how_long >= 1:
-    #                 '*********\nBOUNCE INTO FUN\nThank you for shopping with us\n*********'
-    #
-    #                 continue
-    #             elif how_many >= 5:
-    #                 return 'Max number of days to rent this item is 5 days, please re-enter a valid number to complete your process.'
+        print(purchase_item(trans))
