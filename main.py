@@ -93,13 +93,36 @@ def purchase_item(trans):
             '\t\tTotal: ${0:.2f}'.format(total))
         return receipt
 
-#
-# def return_item():
-#     """ str, int -> None
-#     Allows the customer to return the item(s) they rented.
-#     """
-#
-#
+
+def return_item(trans):
+    """ str, int -> None
+    Allows the customer to return the item(s) they rented with the receipt of
+    the replacement value (10%) they paid to rent the item.
+    """
+    purchase_fees = {'castle_bouncer': 400,
+                     'sports_bouncer': 400,
+                     'disney_princess_bouncer': 400,
+                     '16"_wave_pool_slide': 550,
+                     'dolphin_slide': 550,
+                     'giant_slip_and_dip': 550,
+                     'elephant_bouncer': 625,
+                     'jurassic_adventure_course': 625,
+                     'yellow_slide_and_pool_combo': 625}
+    if trans == 'return':
+        for key, value in purchase_fees.items():
+            key = key.replace('_', ' ').title()
+            print('{0}'.format(key))
+        which_one = input('Which item are you returning?\n').strip().lower(
+        ).replace(' ', '_')
+        how_many = int(input('Quantity:').strip())
+        total = purchase_fees[which_one] / 10
+        receipt = (
+            '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
+            '\n' + str(how_many) + '\t' + which_one + '\n'
+            'Return -- ' + str(how_many) + '\n'
+            '\t\tTotal: ${0:.2f}'.format(total))
+        return receipt
+
 # def replace_item():
 #     """ str, int -> None
 #     User inputs whether it's damaged or not. After, the item is replaced, it
@@ -128,3 +151,4 @@ if __name__ == '__main__':
             ).lower()
         print(rent_item(trans))
         print(purchase_item(trans))
+        print(return_item(trans))
