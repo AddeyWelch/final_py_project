@@ -10,7 +10,7 @@ def main():
         return show_inventory()
     elif who == 'customer':
         trans = input(
-            'Which transaction would you like to complete? (Enter RENT, RETURN, PURCHASE, or REPLACE)\n').strip(
+            'Which transaction would you like to complete? (Enter RENT, PURCHASE, or RETURN)\n').strip(
             ).lower()
         if trans == 'rent':
             return rent_item()
@@ -18,8 +18,6 @@ def main():
             return purchase_item()
         elif trans == 'return':
             return return_item()
-        elif trans == 'replace':
-            return replace_item()
         else:
             return not_available()
     else:
@@ -75,7 +73,7 @@ def rent_item():
     receipt = (
         '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
         '\n' + str(how_many) + '\t' + options + '\n'
-        'Rent -- ' + str(how_long) + '\n'
+        'Rented -- ' + str(how_long) + '\n'
         '\t\tTotal: ${0:.2f}'.format(total))
     return receipt
 
@@ -85,23 +83,23 @@ def purchase_item():
     Display the items available to purchase from. Allows the customer to select
     the item of their choice and the quantity of that item.
     """
-    purchase_fees = {'castle_bouncer': 400,
-                     'sports_bouncer': 400,
-                     'disney_princess_bouncer': 400,
-                     '16"_wave_pool_slide': 550,
-                     'dolphin_slide': 550,
-                     'giant_slip_and_dip': 550,
-                     'elephant_bouncer': 625,
-                     'jurassic_adventure_course': 625,
-                     'yellow_slide_and_pool_combo': 625}
+    purchase_fees = {'castle_bouncer': [7, 400],
+                     'sports_bouncer': [4, 400],
+                     'disney_princess_bouncer': [3, 400],
+                     '16"_wave_pool_slide': [4, 550],
+                     'dolphin_slide': [5, 550],
+                     'giant_slip_and_dip': [2, 550],
+                     'elephant_bouncer': [6, 625],
+                     'jurassic_adventure_course': [2, 625],
+                     'yellow_slide_and_pool_combo': [5, 625]}
     tax = 1.07
     print('Please select one of the following:')
     for key, value in purchase_fees.items():
         key = key.replace('_', ' ').title()
-        print('{0} - ${1}'.format(key, value))
+        print('{0} - {1} - ${2}'.format(key, value[0], value[1]))
     options = input().strip().lower().replace(' ', '_')
     how_many = int(input('Quantity:').strip())
-    total = purchase_fees[options] * how_many * tax
+    total = purchase_fees[options][1] * how_many * tax
     receipt = (
         '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
         '\n' + str(how_many) + '\t' + options + '\n'
@@ -124,27 +122,33 @@ def return_item():
                      'elephant_bouncer': 625,
                      'jurassic_adventure_course': 625,
                      'yellow_slide_and_pool_combo': 625}
+    tax = 1.07
     for key, value in purchase_fees.items():
         key = key.replace('_', ' ').title()
         print('{0}'.format(key))
     which_one = input('Which item are you returning?\n').strip().lower(
     ).replace(' ', '_')
     how_many = int(input('Quantity:').strip())
-    total = purchase_fees[which_one] / 10
-    receipt = (
-        '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
-        '\n' + str(how_many) + '\t' + which_one + '\n'
-        'Return -- ' + str(how_many) + '\n'
-        '\t\tRefund Total: ${0:.2f}'.format(total))
-    return receipt
+    condition = input('Is the item you are returning damaged? (y/n)\n').strip(
+    ).lower()
+    if condition == 'y':
+        # return replace_item()
+        total = purchase_fees[which_one] * how_many * tax
+        receipt = (
+            '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
+            '\n' + str(how_many) + '\t' + which_one + '\n'
+            'Return -- ' + str(how_many) + '\n'
+            '\t\tTotal: ${0:.2f}'.format(total))
+        return receipt
+    else:
+        total = purchase_fees[which_one] / 10
+        receipt = (
+            '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
+            '\n' + str(how_many) + '\t' + which_one + '\n'
+            'Return -- ' + str(how_many) + '\n'
+            '\t\tRefund Total: ${0:.2f}'.format(total))
+        return receipt
 
-# def replace_item():
-#     """ str, int -> None
-#     User inputs whether it's damaged or not. After, the item is replaced, it
-#     will calculate the total amount owed and prints it out to the customer.
-#     """
-#
-#
 # def total_sales_cost():
 #     """ str -> float
 #     Returns the price (including the tax, 7%) calculated of the items selected.
