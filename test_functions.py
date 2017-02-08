@@ -5,11 +5,10 @@ def test_show_inventory():
     assert main.show_inventory() == [[
         'Houses', 'Castle Bouncer (7)', 'Sports Bouncer (4)',
         'Disney Princess Bouncer (3)'
-    ], ['Water Slides', '16’ Wave Pool Slide (4)', 'Dolphin Slide (5)',
+    ], ['Water Slides', '16" Wave Pool Slide (4)', 'Dolphin Slide (5)',
         'Giant Slip and Dip (2)'], ['Combo', 'Elephant Bouncer (6)',
                                     'Jurassic Adventure Course (2)',
-                                    'YRP Bounce Slide and Pool Combo (5)']]
-
+                                    'Yellow Slide and Pool Combo (5)']]
 # def test_rent_item():
 #     assert main.rent_item('Disney Princess Bouncer', 1) == 107.0
 #     assert main.rent_item('Jurassic Adventure Course', 1) == 240.75

@@ -1,30 +1,57 @@
+import csv
+
+
+def main():
+    """ str -> None
+    """
+    print('Welcome to Bounce Into Fun!')
+    who = input('Are you administration or customer?').lower().strip()
+    if who == 'administration':
+        return show_inventory()
+    elif who == 'customer':
+        trans = input(
+            'Which transaction would you like to complete? (Enter RENT, RETURN, PURCHASE, or REPLACE)\n').strip(
+            ).lower()
+        if trans == 'rent':
+            return rent_item()
+        elif trans == 'purchase':
+            return purchase_item()
+        elif trans == 'return':
+            return return_item()
+        elif trans == 'replace':
+            return replace_item()
+        else:
+            return not_available()
+    else:
+        return 'This input is invalid!'
+
+
 def show_inventory():
-    """ list of strings -> str
+    """ None -> list
     Allows the user to view what inventory is in stock.
     """
-    with open('inventory.txt', 'r') as file:
-        new_list = file.read().splitlines()
+    with open('inventory.csv') as file:
+        new_list = csv.reader(file)
         # ['Houses - Castle Bouncer (7) - Sports Bouncer (4) - Disney Princess Bouncer (3)']
-
-        list_info = list(map(lambda s: s.split(' - '), new_list))
+        list_info = list(new_list)
         # get info in usable format
-    return list_info
+        return list_info
 
 
-def rent_item(trans):
-    """ str, int -> str
+def rent_item():
+    """ None -> str
     Display the items available to rent from. Allows the customer to select the
-    item of their choice and the quantity of that item.
+    item of their choice and the quantity of that item and return the price.
     """
-    rental_fees = {'castle_bouncer': 100,
-                   'sports_bouncer': 100,
-                   'disney_princess_bouncer': 100,
-                   '16"_wave_pool_slide': 175,
-                   'dolphin_slide': 175,
-                   'giant_slip_and_dip': 175,
-                   'elephant_bouncer': 225,
-                   'jurassic_adventure_course': 225,
-                   'yellow_slide_and_pool_combo': 225}
+    rental_fees = {'castle_bouncer': [7, 100],
+                   'sports_bouncer': [4, 100],
+                   'disney_princess_bouncer': [3, 100],
+                   '16"_wave_pool_slide': [4, 175],
+                   'dolphin_slide': [5, 175],
+                   'giant_slip_and_dip': [2, 175],
+                   'elephant_bouncer': [6, 225],
+                   'jurassic_adventure_course': [2, 225],
+                   'yellow_slide_and_pool_combo': [5, 225]}
     purchase_fees = {'castle_bouncer': 400,
                      'sports_bouncer': 400,
                      'disney_princess_bouncer': 400,
@@ -35,39 +62,29 @@ def rent_item(trans):
                      'jurassic_adventure_course': 625,
                      'yellow_slide_and_pool_combo': 625}
     tax = 1.07
-    if trans == 'rent':
-        print('Please select one of the following:')
-        for key, value in rental_fees.items():
-            key = key.replace('_', ' ').title()
-            print('{0} - ${1}'.format(key, value))
-        options = input().strip().lower().replace(' ', '_')
-        how_many = int(input('Quantity:').strip())
-        how_long = int(input(
-            'How long are you wanting to rent this item for?').strip())
-        total = (rental_fees[options] * how_long + purchase_fees[options] / 10
-                 ) * how_many * tax
-        receipt = (
-            '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
-            '\n' + str(how_many) + '\t' + options + '\n'
-            'Rent -- ' + str(how_long) + '\n'
-            '\t\tTotal: ${0:.2f}'.format(total))
-        return receipt
+    print('Please select one of the following:')
+    for key, value in rental_fees.items():
+        key = key.replace('_', ' ').title()
+        print('{0} - {1} - ${2}'.format(key, value[0], value[1]))
+    options = input().strip().lower().replace(' ', '_')
+    how_many = int(input('Quantity:').strip())
+    how_long = int(input(
+        'How long are you wanting to rent this item for?').strip())
+    total = (rental_fees[options][1] * how_long + purchase_fees[options] / 10
+             ) * how_many * tax
+    receipt = (
+        '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
+        '\n' + str(how_many) + '\t' + options + '\n'
+        'Rent -- ' + str(how_long) + '\n'
+        '\t\tTotal: ${0:.2f}'.format(total))
+    return receipt
 
 
-def purchase_item(trans):
-    """ str, int -> float
+def purchase_item():
+    """ None -> str
     Display the items available to purchase from. Allows the customer to select
     the item of their choice and the quantity of that item.
     """
-    rental_fees = {'castle_bouncer': 100,
-                   'sports_bouncer': 100,
-                   'disney_princess_bouncer': 100,
-                   '16"_wave_pool_slide': 175,
-                   'dolphin_slide': 175,
-                   'giant_slip_and_dip': 175,
-                   'elephant_bouncer': 225,
-                   'jurassic_adventure_course': 225,
-                   'yellow_slide_and_pool_combo': 225}
     purchase_fees = {'castle_bouncer': 400,
                      'sports_bouncer': 400,
                      'disney_princess_bouncer': 400,
@@ -78,24 +95,23 @@ def purchase_item(trans):
                      'jurassic_adventure_course': 625,
                      'yellow_slide_and_pool_combo': 625}
     tax = 1.07
-    if trans == 'purchase':
-        print('Please select one of the following:')
-        for key, value in purchase_fees.items():
-            key = key.replace('_', ' ').title()
-            print('{0} - ${1}'.format(key, value))
-        options = input().strip().lower().replace(' ', '_')
-        how_many = int(input('Quantity:').strip())
-        total = purchase_fees[options] * how_many * tax
-        receipt = (
-            '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
-            '\n' + str(how_many) + '\t' + options + '\n'
-            'Purchased -- ' + str(how_many) + '\n'
-            '\t\tTotal: ${0:.2f}'.format(total))
-        return receipt
+    print('Please select one of the following:')
+    for key, value in purchase_fees.items():
+        key = key.replace('_', ' ').title()
+        print('{0} - ${1}'.format(key, value))
+    options = input().strip().lower().replace(' ', '_')
+    how_many = int(input('Quantity:').strip())
+    total = purchase_fees[options] * how_many * tax
+    receipt = (
+        '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
+        '\n' + str(how_many) + '\t' + options + '\n'
+        'Purchased -- ' + str(how_many) + '\n'
+        '\t\tTotal: ${0:.2f}'.format(total))
+    return receipt
 
 
-def return_item(trans):
-    """ str, int -> None
+def return_item():
+    """ None -> str
     Allows the customer to return the item(s) they rented with the receipt of
     the replacement value (10%) they paid to rent the item.
     """
@@ -108,20 +124,19 @@ def return_item(trans):
                      'elephant_bouncer': 625,
                      'jurassic_adventure_course': 625,
                      'yellow_slide_and_pool_combo': 625}
-    if trans == 'return':
-        for key, value in purchase_fees.items():
-            key = key.replace('_', ' ').title()
-            print('{0}'.format(key))
-        which_one = input('Which item are you returning?\n').strip().lower(
-        ).replace(' ', '_')
-        how_many = int(input('Quantity:').strip())
-        total = purchase_fees[which_one] / 10
-        receipt = (
-            '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
-            '\n' + str(how_many) + '\t' + which_one + '\n'
-            'Return -- ' + str(how_many) + '\n'
-            '\t\tTotal: ${0:.2f}'.format(total))
-        return receipt
+    for key, value in purchase_fees.items():
+        key = key.replace('_', ' ').title()
+        print('{0}'.format(key))
+    which_one = input('Which item are you returning?\n').strip().lower(
+    ).replace(' ', '_')
+    how_many = int(input('Quantity:').strip())
+    total = purchase_fees[which_one] / 10
+    receipt = (
+        '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
+        '\n' + str(how_many) + '\t' + which_one + '\n'
+        'Return -- ' + str(how_many) + '\n'
+        '\t\tRefund Total: ${0:.2f}'.format(total))
+    return receipt
 
 # def replace_item():
 #     """ str, int -> None
@@ -140,15 +155,14 @@ def return_item(trans):
 #     Update the file every time a new transaction is processed and will write it to a .csv file.
 #     """
 
+
+def not_available():
+    """ None -> str
+    If the customer inputs an invalid answer, this functions will return a
+    string letting the customer know it was invalid.
+    """
+    return "I'm sorry but this transaction can not be completed. Please try again."
+
+
 if __name__ == '__main__':
-    print('Welcome to Bounce Into Fun!')
-    who = input('Are you administration or customer?').lower().strip()
-    if who == 'administration':
-        print(show_inventory())
-    else:
-        trans = input(
-            'Which transaction would you like to complete? (Enter RENT, RETURN, PURCHASE, or REPLACE)\n').strip(
-            ).lower()
-        print(rent_item(trans))
-        print(purchase_item(trans))
-        print(return_item(trans))
+    print(main())
