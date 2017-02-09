@@ -22,6 +22,8 @@ purchase_fees = {'castle_bouncer': [7, 400],
 
 def main():
     """ str -> None
+    Contains some of the program's branching and all the functions parameters
+    ('inputs')
     """
     print('Welcome to Bounce Into Fun!')
     who = input('Are you administration or customer?').lower().strip()
@@ -35,8 +37,11 @@ def main():
             print('Please select one of the following:')
             for key, value in rental_fees.items():
                 key = key.replace('_', ' ').title()
+                # elephant_bouncer --> Elephant Bouncer
                 print('{0} - {1} - ${2}'.format(key, value[0], value[1]))
+                # Format of the dict --> Castle Bouncer - 7 - $400
             options = input().strip().lower().replace(' ', '_')
+            # Castle Bouncer --> castle_bouncer
             how_many = int(input('Quantity:').strip())
             how_long = int(input(
                 'How long are you wanting to rent this item for?').strip())
@@ -45,16 +50,22 @@ def main():
             print('Please select one of the following:')
             for key, value in purchase_fees.items():
                 key = key.replace('_', ' ').title()
+                # elephant_bouncer --> Elephant Bouncer
                 print('{0} - {1} - ${2}'.format(key, value[0], value[1]))
+                # Format of the dict --> Castle Bouncer - 7 - $400
             options = input().strip().lower().replace(' ', '_')
+            # Castle Bouncer --> castle_bouncer
             how_many = int(input('Quantity:').strip())
             return purchase_item(options, how_many)
         elif trans == 'return':
             for key, value in purchase_fees.items():
                 key = key.replace('_', ' ').title()
+                # elephant_bouncer --> Elephant Bouncer
                 print('{0}'.format(key))
+                # Format of the dict --> Castle Bouncer
             which_one = input('Which item are you returning?\n').strip().lower(
             ).replace(' ', '_')
+            # Castle Bouncer --> castle_bouncer
             how_many = int(input('Quantity:').strip())
             condition = input(
                 'Is the item you are returning damaged? (y/n)\n').strip(
@@ -74,6 +85,12 @@ def show_inventory():
         new_list = csv.reader(file)
         # get info in usable format
         list_info = list(new_list)
+        # [['Houses', 'Castle Bouncer (7)', 'Sports Bouncer (4)',
+        #     'Disney Princess Bouncer (3)'],
+        # ['Water Slides', '16" Wave Pool Slide (4)', 'Dolphin Slide (5)',
+        #     'Giant Slip and Dip (2)'],
+        # ['Combo', 'Elephant Bouncer (6)', 'Jurassic Adventure Course (2)',
+        #   'Yellow Slide and Pool Combo (5)']]
         return list_info
 
 
@@ -86,6 +103,7 @@ def rent_item(options, how_many, how_long):
     total = (
         rental_fees[options][1] * how_long + purchase_fees[options][1] / 10
     ) * how_many * tax
+    # total = (100 * 4 (days) + 400 / 10) * 2 * 1.07
     receipt = (
         '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
         '\n' + str(how_many) + '\t' + options + '\n'
@@ -101,6 +119,7 @@ def purchase_item(options, how_many):
     """
     tax = 1.07
     total = purchase_fees[options][1] * how_many * tax
+    # total = 400 * 2 * 1.07
     receipt = (
         '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
         '\n' + str(how_many) + '\t' + options + '\n'
@@ -117,6 +136,7 @@ def return_item(which_one, how_many, condition):
     tax = 1.07
     if condition == 'y':
         total = purchase_fees[which_one][1] * how_many * tax
+        # total = 400 * 2 * 1.07
         receipt = (
             '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
             '\n' + str(how_many) + '\t' + which_one + '\n'
@@ -125,6 +145,7 @@ def return_item(which_one, how_many, condition):
         return receipt
     else:
         total = purchase_fees[which_one][1] / 10
+        # total = 400 / 10
         receipt = (
             '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
             '\n' + str(how_many) + '\t' + which_one + '\n'
@@ -139,11 +160,13 @@ def return_item(which_one, how_many, condition):
 #     """
 #
 
-# def update_inventory():
-#     """ str -> None
-#     Update the file every time a new transaction is processed and will write it
-#     to a .csv file.
-#     """
+
+def update_inventory():
+    """ str -> None
+    Update the file every time a new transaction is processed and will write it
+    to a .csv file.
+    """
+
 
 if __name__ == '__main__':
     print(main())
