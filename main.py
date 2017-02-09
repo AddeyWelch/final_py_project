@@ -19,7 +19,7 @@ def main():
         elif trans == 'return':
             return return_item()
         else:
-            return not_available()
+            return "I'm sorry but this transaction can not be completed. Please try again."
     else:
         return 'This input is invalid!'
 
@@ -158,15 +158,6 @@ def return_item():
 #     """ str -> None
 #     Update the file every time a new transaction is processed and will write it to a .csv file.
 #     """
-
-
-def not_available():
-    """ None -> str
-    If the customer inputs an invalid answer, this functions will return a
-    string letting the customer know it was invalid.
-    """
-    return "I'm sorry but this transaction can not be completed. Please try again."
-
 
 if __name__ == '__main__':
     print(main())
