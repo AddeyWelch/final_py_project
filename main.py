@@ -99,7 +99,10 @@ def main():
                         condition = input(
                             'Is the item you are returning damaged? (y/n)\n').strip(
                             ).lower()
-                        return return_item(which_one, how_many, condition)
+                        if condition == 'y':
+                            return return_item(which_one, how_many, condition)
+                        else:
+                            return 'You must enter y or n.'
             else:
                 return 'The item you have entered is not available.'
         else:

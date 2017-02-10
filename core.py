@@ -1,5 +1,5 @@
-import csv
-
+import pickle
+# {Name of item: [how many is in stock, price for rent per day, full price]}
 rental_fees = {'castle_bouncer': [7, 100, 400],
                'sports_bouncer': [4, 100, 400],
                'disney_princess_bouncer': [3, 100, 400],
@@ -14,21 +14,9 @@ rental_fees = {'castle_bouncer': [7, 100, 400],
 # (no repeating in each function)
 
 
-def show_inventory():
-    """ None -> list
-    Allows the user to view what inventory is in stock.
-    """
-    with open('inventory.csv') as file:
-        new_list = csv.reader(file)
-        # get info in usable format
-        list_info = list(new_list)
-        # [['Houses', 'Castle Bouncer (7)', 'Sports Bouncer (4)',
-        #     'Disney Princess Bouncer (3)'],
-        # ['Water Slides', '16" Wave Pool Slide (4)', 'Dolphin Slide (5)',
-        #     'Giant Slip and Dip (2)'],
-        # ['Combo', 'Elephant Bouncer (6)', 'Jurassic Adventure Course (2)',
-        #   'Yellow Slide and Pool Combo (5)']]
-        return list_info
+def init_inventory():
+    with open('inventory.p', 'wb') as fin:
+        pickle.dump(rental_fees, fin)
 
 
 def rent_item(options, how_many, how_long):
@@ -89,14 +77,44 @@ def return_item(which_one, how_many, condition):
             '\t\tRefund Total: ${0:.2f}'.format(total))
         return receipt
 
-# def total_sales_cost():
-#     """ str -> float
-#     Returns the price (including the tax, 7%) calculated of the items
-#     selected.
-#     """
-#
-# def update_inventory():
-#     """ str -> None
-#     Update the file every time a new transaction is processed and will write it
-#     to a .csv file.
-#     """
+
+def update_inventory_remove(options, how_many):
+    """ str -> None
+    Update the file every time a new transaction is processed and will write it
+    to a .p (pickle) file.
+    """
+    with open('inventory.p', 'rb') as fin:
+        data = pickle.load(fin)
+        update = int(data[options][0]) - how_many
+    with open('inventory.p', 'wb') as fin:
+        pickle.dump(update, fin)
+    print(show_inventory())
+
+
+def update_inventory_add(options, how_many):
+    """
+    """
+    with open('inventory.p', 'rb') as fin:
+        data = pickle.load(fin)
+        update = int(data[options][0]) + how_many
+    with open('inventory.p', 'wb') as fin:
+        pickle.dump(update, fin)
+    print(show_inventory())
+
+
+def show_inventory():
+    """ None -> list
+    Allows the user to view what inventory is in stock.
+    """
+    with open('inventory.p', 'rb') as fin:
+        data = pickle.load(fin)
+        # {'jurassic_adventure_course': [2, 225, 625],
+        #  'sports_bouncer': [4, 100, 400],
+        #  '16"_wave_pool_slide': [4, 175, 550],
+        #  'giant_slip_and_dip': [2, 175, 500],
+        #  'castle_bouncer': [7, 100, 400],
+        #  'disney_princess_bouncer': [3, 100, 400],
+        #  'yellow_slide_and_pool_combo': [5, 225, 625],
+        #  'dolphin_slide': [5, 175, 550],
+        #  'elephant_bouncer': [6, 225, 625]}
+        return data

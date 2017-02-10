@@ -2,13 +2,17 @@ import main
 
 
 def test_show_inventory():
-    assert main.show_inventory() == [[
-        'Houses', 'Castle Bouncer (7)', 'Sports Bouncer (4)',
-        'Disney Princess Bouncer (3)'
-    ], ['Water Slides', '16" Wave Pool Slide (4)', 'Dolphin Slide (5)',
-        'Giant Slip and Dip (2)'], ['Combo', 'Elephant Bouncer (6)',
-                                    'Jurassic Adventure Course (2)',
-                                    'Yellow Slide and Pool Combo (5)']]
+    assert main.show_inventory() == {
+        'jurassic_adventure_course': [2, 225, 625],
+        'sports_bouncer': [4, 100, 400],
+        '16"_wave_pool_slide': [4, 175, 550],
+        'giant_slip_and_dip': [2, 175, 500],
+        'castle_bouncer': [7, 100, 400],
+        'disney_princess_bouncer': [3, 100, 400],
+        'yellow_slide_and_pool_combo': [5, 225, 625],
+        'dolphin_slide': [5, 175, 550],
+        'elephant_bouncer': [6, 225, 625]
+    }
 
 
 def test_rent_item():
@@ -49,7 +53,6 @@ def test_return_item():
         'Returned -- ' + '3' + '\n'
         '\t\tRefund Total: $55.00')
 
-#
-# def test_total_sales_cost(rented_item):
-#     assert main.test_total_sales_cost('total') == 800.0
-#     assert main.test_total_sales_cost('total') == 500.0
+# def test_update_inventory():
+#     assert main.test_update_inventory() ==
+#     assert main.test_update_inventory() ==
