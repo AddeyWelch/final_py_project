@@ -1,23 +1,14 @@
 import csv
 
-rental_fees = {'castle_bouncer': [7, 100],
-               'sports_bouncer': [4, 100],
-               'disney_princess_bouncer': [3, 100],
-               '16"_wave_pool_slide': [4, 175],
-               'dolphin_slide': [5, 175],
-               'giant_slip_and_dip': [2, 175],
-               'elephant_bouncer': [6, 225],
-               'jurassic_adventure_course': [2, 225],
-               'yellow_slide_and_pool_combo': [5, 225]}
-purchase_fees = {'castle_bouncer': [7, 400],
-                 'sports_bouncer': [4, 400],
-                 'disney_princess_bouncer': [3, 400],
-                 '16"_wave_pool_slide': [4, 550],
-                 'dolphin_slide': [5, 550],
-                 'giant_slip_and_dip': [2, 550],
-                 'elephant_bouncer': [6, 625],
-                 'jurassic_adventure_course': [2, 625],
-                 'yellow_slide_and_pool_combo': [5, 625]}
+rental_fees = {'castle_bouncer': [7, 100, 400],
+               'sports_bouncer': [4, 100, 400],
+               'disney_princess_bouncer': [3, 100, 400],
+               '16"_wave_pool_slide': [4, 175, 550],
+               'dolphin_slide': [5, 175, 550],
+               'giant_slip_and_dip': [2, 175, 500],
+               'elephant_bouncer': [6, 225, 625],
+               'jurassic_adventure_course': [2, 225, 625],
+               'yellow_slide_and_pool_combo': [5, 225, 625]}
 
 
 def main():
@@ -48,17 +39,17 @@ def main():
             return rent_item(options, how_many, how_long)
         elif trans == 'purchase':
             print('Please select one of the following:')
-            for key, value in purchase_fees.items():
+            for key, value in rental_fees.items():
                 key = key.replace('_', ' ').title()
                 # elephant_bouncer --> Elephant Bouncer
-                print('{0} - {1} - ${2}'.format(key, value[0], value[1]))
+                print('{0} - {1} - ${2}'.format(key, value[0], value[2]))
                 # Format of the dict --> Castle Bouncer - 7 - $400
             options = input().strip().lower().replace(' ', '_')
             # Castle Bouncer --> castle_bouncer
             how_many = int(input('Quantity:').strip())
             return purchase_item(options, how_many)
         elif trans == 'return':
-            for key, value in purchase_fees.items():
+            for key, value in rental_fees.items():
                 key = key.replace('_', ' ').title()
                 # elephant_bouncer --> Elephant Bouncer
                 print('{0}'.format(key))
@@ -100,9 +91,8 @@ def rent_item(options, how_many, how_long):
     item of their choice and the quantity of that item and return the price.
     """
     tax = 1.07
-    total = (
-        rental_fees[options][1] * how_long + purchase_fees[options][1] / 10
-    ) * how_many * tax
+    total = (rental_fees[options][1] * how_long + rental_fees[options][2] / 10
+             ) * how_many * tax
     # total = (100 * 4 (days) + 400 / 10) * 2 * 1.07
     receipt = (
         '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
@@ -118,7 +108,7 @@ def purchase_item(options, how_many):
     the item of their choice and the quantity of that item.
     """
     tax = 1.07
-    total = purchase_fees[options][1] * how_many * tax
+    total = rental_fees[options][2] * how_many * tax
     # total = 400 * 2 * 1.07
     receipt = (
         '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
@@ -135,7 +125,7 @@ def return_item(which_one, how_many, condition):
     """
     tax = 1.07
     if condition == 'y':
-        total = purchase_fees[which_one][1] * how_many * tax
+        total = rental_fees[which_one][2] * how_many * tax
         # total = 400 * 2 * 1.07
         receipt = (
             '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
@@ -144,7 +134,7 @@ def return_item(which_one, how_many, condition):
             '\t\tTotal: ${0:.2f}'.format(total))
         return receipt
     else:
-        total = purchase_fees[which_one][1] / 10
+        total = rental_fees[which_one][2] / 10
         # total = 400 / 10
         receipt = (
             '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
