@@ -31,7 +31,7 @@ def rent_item(options, how_many, how_long):
     receipt = (
         '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
         '\n' + str(how_many) + '\t' + options + '\n'
-        'Rented -- ' + str(how_long) + '\n'
+        'Rented -- ' + str(how_long) + 'days' + '\n'
         '\t\tTotal: ${0:.2f}'.format(total))
     return receipt
 
