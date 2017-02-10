@@ -33,10 +33,21 @@ def main():
                 # Format of the dict --> Castle Bouncer - 7 - $400
             options = input().strip().lower().replace(' ', '_')
             # Castle Bouncer --> castle_bouncer
-            how_many = int(input('Quantity:').strip())
-            how_long = int(input(
-                'How long are you wanting to rent this item for?').strip())
-            return rent_item(options, how_many, how_long)
+            while True:
+                try:
+                    how_many = int(input('Quantity:').strip())
+                    break
+                except:
+                    print("That's not an integer..")
+                    continue
+            for num in str(how_many):
+                if num > str(rental_fees[options][0]):
+                    return 'This input is invalid, please try again!'
+                else:
+                    how_long = int(input(
+                        'How long are you wanting to rent this item for?').strip(
+                        ))
+                    return rent_item(options, how_many, how_long)
         elif trans == 'purchase':
             print('Please select one of the following:')
             for key, value in rental_fees.items():
@@ -46,8 +57,18 @@ def main():
                 # Format of the dict --> Castle Bouncer - 7 - $400
             options = input().strip().lower().replace(' ', '_')
             # Castle Bouncer --> castle_bouncer
-            how_many = int(input('Quantity:').strip())
-            return purchase_item(options, how_many)
+            while True:
+                try:
+                    how_many = int(input('Quantity:').strip())
+                    break
+                except:
+                    print("That's not an integer..")
+                    continue
+            for num in str(how_many):
+                if num > str(rental_fees[options][0]):
+                    return 'This input is invalid, please try again!'
+                else:
+                    return purchase_item(options, how_many)
         elif trans == 'return':
             for key, value in rental_fees.items():
                 key = key.replace('_', ' ').title()
@@ -57,11 +78,21 @@ def main():
             which_one = input('Which item are you returning?\n').strip().lower(
             ).replace(' ', '_')
             # Castle Bouncer --> castle_bouncer
-            how_many = int(input('Quantity:').strip())
-            condition = input(
-                'Is the item you are returning damaged? (y/n)\n').strip(
-                ).lower()
-            return return_item(which_one, how_many, condition)
+            while True:
+                try:
+                    how_many = int(input('Quantity:').strip())
+                    break
+                except:
+                    print("That's not an integer..")
+                    continue
+            for num in str(how_many):
+                if num > str(rental_fees[which_one][0]):
+                    return 'Please enter the correct number of items.'
+                else:
+                    condition = input(
+                        'Is the item you are returning damaged? (y/n)\n').strip(
+                        ).lower()
+                    return return_item(which_one, how_many, condition)
         else:
             return "I'm sorry but this transaction can not be completed. Please try again."
     else:
