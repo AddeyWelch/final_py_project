@@ -1,4 +1,5 @@
 from core import (show_inventory, rent_item, purchase_item, return_item)
+import sys
 
 rental_fees = {'castle_bouncer': [7, 100, 400],
                'sports_bouncer': [4, 100, 400],
@@ -16,19 +17,23 @@ def main():
     Contains some of the program's branching and all the functions parameters
     ('inputs')
     """
-    print('Welcome to Bounce Into Fun!')
-    who = input('Are you administration or customer?').lower().strip()
+    print('\n**Welcome to Bounce Into Fun!**\n')
+    who = input(
+        'Are you administration or customer?\n(Also, you can enter "q" to quit this program)\n').lower(
+        ).strip()
     if who == 'administration':
         administration()
     elif who == 'customer':
         customer()
+    elif who == 'q':
+        quit_program(who)
     else:
         return 'This input is invalid! Please try again'
         main()
 
 
 def administration():
-    return show_inventory()
+    print(show_inventory())
 
 
 def customer():
@@ -73,7 +78,7 @@ def rent():
                     how_long = int(input(
                         'How long are you wanting to rent this item for?').strip(
                         ))
-                    print(rent_item(options, how_many, how_long))
+                    print(rent_item(options, how_many, how_long) + '\n')
                     this = False
                     main()
     else:
@@ -98,11 +103,15 @@ def purchase():
             except:
                 print("That's not an integer..")
                 continue
-        for num in str(how_many):
-            if num > str(rental_fees[options][0]):
-                return 'This input is invalid, please try again!'
-            else:
-                return purchase_item(options, how_many)
+        this = True
+        while this:
+            for num in str(how_many):
+                if num > str(rental_fees[options][0]):
+                    return 'This input is invalid, please try again!'
+                else:
+                    print(purchase_item(options, how_many) + '\n')
+                    this = False
+                    main()
     else:
         return 'The item you have entered is not available.'
 
@@ -124,19 +133,28 @@ def returns():
             except:
                 print("That's not an integer..")
                 continue
-        for num in str(how_many):
-            if num > str(rental_fees[which_one][0]):
-                print('Please enter the correct number of items.')
-            else:
-                condition = input(
-                    'Is the item you are returning damaged? (y/n)\n').strip(
-                    ).lower()
-                if condition == 'y':
-                    return return_item(which_one, how_many, condition)
+        this = True
+        while this:
+            for num in str(how_many):
+                if num > str(rental_fees[which_one][0]):
+                    print('Please enter the correct number of items.')
                 else:
-                    print('You must enter y or n.')
+                    condition = input(
+                        'Is the item you are returning damaged? (y/n)\n').strip(
+                        ).lower()
+                    if condition == 'y':
+                        return return_item(which_one, how_many, condition)
+                    else:
+                        print('You must enter y or n.')
+                    this = False
+                    main()
     else:
         return 'The item you have entered is not available.'
+
+
+def quit_program(who):
+    if who == "q":
+        sys.exit(0)
 
 
 if __name__ == '__main__':
