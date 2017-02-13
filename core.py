@@ -117,4 +117,4 @@ def show_inventory():
         #  'yellow_slide_and_pool_combo': [5, 225, 625],
         #  'dolphin_slide': [5, 175, 550],
         #  'elephant_bouncer': [6, 225, 625]}
-        return data
+        print(data)
