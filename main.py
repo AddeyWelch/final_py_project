@@ -83,7 +83,7 @@ def rent():
                     this = False
                     rerun_program()
     else:
-        return 'The item you have entered is not available.'
+        print('The item you have entered is not available.')
         rent()
 
 
@@ -114,7 +114,7 @@ def purchase():
                     this = False
                     rerun_program()
     else:
-        return 'The item you have entered is not available.'
+        print('The item you have entered is not available.')
 
 
 def returns():
@@ -151,7 +151,8 @@ def returns():
                     this = False
                     rerun_program()
     else:
-        return 'The item you have entered is not available.'
+        print('The item you have entered is not available.')
+        returns()
 
 
 def quit_program(who):
