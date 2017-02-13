@@ -11,13 +11,14 @@ rental_fees = {'castle_bouncer': [7, 100, 400],
                'jurassic_adventure_course': [2, 225, 625],
                'yellow_slide_and_pool_combo': [5, 225, 625]}
 
+print('\n**Welcome to Bounce Into Fun!**\n')
+
 
 def main():
     """ str -> None
     Contains some of the program's branching and all the functions parameters
     ('inputs')
     """
-    print('\n**Welcome to Bounce Into Fun!**\n')
     who = input(
         'Are you administration or customer?\n(Also, you can enter "q" to quit this program)\n').lower(
         ).strip()
@@ -80,7 +81,7 @@ def rent():
                         ))
                     print(rent_item(options, how_many, how_long) + '\n')
                     this = False
-                    main()
+                    rerun_program()
     else:
         return 'The item you have entered is not available.'
         rent()
@@ -111,7 +112,7 @@ def purchase():
                 else:
                     print(purchase_item(options, how_many) + '\n')
                     this = False
-                    main()
+                    rerun_program()
     else:
         return 'The item you have entered is not available.'
 
@@ -143,11 +144,12 @@ def returns():
                         'Is the item you are returning damaged? (y/n)\n').strip(
                         ).lower()
                     if condition == 'y':
-                        return return_item(which_one, how_many, condition)
+                        print(return_item(which_one, how_many, condition) +
+                              '\n')
                     else:
                         print('You must enter y or n.')
                     this = False
-                    main()
+                    rerun_program()
     else:
         return 'The item you have entered is not available.'
 
@@ -155,6 +157,18 @@ def returns():
 def quit_program(who):
     if who == "q":
         sys.exit(0)
+
+
+def rerun_program():
+    choice = input(
+        'Would you like to continue the program or exist? (C or Q)\n').strip(
+        ).lower()
+    if choice == 'c':
+        main()
+    elif choice == 'q':
+        quit_program(choice)
+    else:
+        print('You must enter C or Q')
 
 
 if __name__ == '__main__':
