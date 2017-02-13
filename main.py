@@ -1,4 +1,5 @@
-from core import (show_inventory, rent_item, purchase_item, return_item)
+from core import (show_inventory, rent_item, purchase_item, return_item,
+                  update_inventory_add, update_inventory_remove)
 import sys
 
 rental_fees = {'castle_bouncer': [7, 100, 400],
@@ -42,26 +43,26 @@ def customer():
         'Which transaction would you like to complete? (Enter RENT, PURCHASE, or RETURN)\n').strip(
         ).lower()
     if trans == 'rent':
-        rent()
+        rent(trans)
     elif trans == 'purchase':
-        purchase()
+        purchase(trans)
     elif trans == 'return':
-        returns()
+        returns(trans)
     else:
         return "I'm sorry but this transaction can not be completed. Please try again."
         customer()
 
 
-def rent():
+def rent(trans):
     print('Please select one of the following:')
     for key, value in rental_fees.items():
         key = key.replace('_', ' ').title()
         # elephant_bouncer --> Elephant Bouncer
         print('{0} - {1} - ${2}'.format(key, value[0], value[1]))
         # Format of the dict --> Castle Bouncer - 7 - $400
-    options = input().strip().lower().replace(' ', '_')
+    option_name = input().strip().lower().replace(' ', '_')
     # Castle Bouncer --> castle_bouncer
-    if options in rental_fees:
+    if option_name in rental_fees:
         while True:
             try:
                 how_many = int(input('Quantity:').strip())
@@ -69,34 +70,39 @@ def rent():
             except:
                 print("That's not an integer..")
                 continue
-        this = True
-        while this:
-            for num in str(how_many):
-                if num > str(rental_fees[options][0]):
-                    return 'This number is invalid, please try again!'
+    this = True
+    while this:
+        for num in str(how_many):
+            if num > str(rental_fees[option_name][0]):
+                print('This number is invalid, please try again!')
+                continue
+            else:
+                how_long = int(input(
+                    'How long are you wanting to rent this item for?').strip())
+                if how_long >= 4:
+                    print('You are limited to rent this item up to 4 days.')
                     continue
                 else:
-                    how_long = int(input(
-                        'How long are you wanting to rent this item for?').strip(
-                        ))
-                    print(rent_item(options, how_many, how_long) + '\n')
+                    print(rent_item(option_name, how_many, how_long) + '\n')
+                    print(update_inventory_remove(trans, option_name,
+                                                  how_many))
                     this = False
                     rerun_program()
     else:
         print('The item you have entered is not available.')
-        rent()
+        rent(trans)
 
 
-def purchase():
+def purchase(trans):
     print('Please select one of the following:')
     for key, value in rental_fees.items():
         key = key.replace('_', ' ').title()
         # elephant_bouncer --> Elephant Bouncer
         print('{0} - {1} - ${2}'.format(key, value[0], value[2]))
         # Format of the dict --> Castle Bouncer - 7 - $400
-    options = input().strip().lower().replace(' ', '_')
+    option_name = input().strip().lower().replace(' ', '_')
     # Castle Bouncer --> castle_bouncer
-    if options in rental_fees:
+    if option_name in rental_fees:
         while True:
             try:
                 how_many = int(input('Quantity:').strip())
@@ -104,20 +110,22 @@ def purchase():
             except:
                 print("That's not an integer..")
                 continue
-        this = True
-        while this:
-            for num in str(how_many):
-                if num > str(rental_fees[options][0]):
-                    return 'This input is invalid, please try again!'
-                else:
-                    print(purchase_item(options, how_many) + '\n')
-                    this = False
-                    rerun_program()
+    this = True
+    while this:
+        for num in str(how_many):
+            if num > str(rental_fees[option_name][0]):
+                return 'This input is invalid, please try again!'
+            else:
+                print(purchase_item(option_name, how_many) + '\n')
+                print(update_inventory_remove(trans, option_name, how_many))
+                this = False
+                rerun_program()
     else:
         print('The item you have entered is not available.')
+        purchase(trans)
 
 
-def returns():
+def returns(trans):
     for key, value in rental_fees.items():
         key = key.replace('_', ' ').title()
         # elephant_bouncer --> Elephant Bouncer
@@ -143,16 +151,17 @@ def returns():
                     condition = input(
                         'Is the item you are returning damaged? (y/n)\n').strip(
                         ).lower()
-                    if condition == 'y':
-                        print(return_item(which_one, how_many, condition) +
-                              '\n')
+                    if condition == 'y' or condition == 'n':
+                        print(return_item(which_one, how_many, condition))
+                        print('')
+                        print(update_inventory_add(trans, which_one, how_many))
                     else:
                         print('You must enter y or n.')
                     this = False
                     rerun_program()
     else:
         print('The item you have entered is not available.')
-        returns()
+        returns(trans)
 
 
 def quit_program(who):

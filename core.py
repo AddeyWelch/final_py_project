@@ -19,34 +19,34 @@ def init_inventory():
         pickle.dump(rental_fees, fin)
 
 
-def rent_item(options, how_many, how_long):
+def rent_item(option_name, how_many, how_long):
     """ None -> str
     Display the items available to rent from. Allows the customer to select the
     item of their choice and the quantity of that item and return the price.
     """
     tax = 1.07
-    total = (rental_fees[options][1] * how_long + rental_fees[options][2] / 10
-             ) * how_many * tax
+    total = (rental_fees[option_name][1] * how_long +
+             rental_fees[option_name][2] / 10) * how_many * tax
     # total = (100 * 4 (days) + 400 / 10) * 2 * 1.07
     receipt = (
         '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
-        '\n' + str(how_many) + '\t' + options + '\n'
+        '\n' + str(how_many) + '\t' + option_name + '\n'
         'Rented -- ' + str(how_long) + ' days' + '\n'
         '\t\tTotal: ${0:.2f}'.format(total))
     return receipt
 
 
-def purchase_item(options, how_many):
+def purchase_item(option_name, how_many):
     """ None -> str
     Display the items available to purchase from. Allows the customer to select
     the item of their choice and the quantity of that item.
     """
     tax = 1.07
-    total = rental_fees[options][2] * how_many * tax
+    total = rental_fees[option_name][2] * how_many * tax
     # total = 400 * 2 * 1.07
     receipt = (
         '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
-        '\n' + str(how_many) + '\t' + options + '\n'
+        '\n' + str(how_many) + '\t' + option_name + '\n'
         'Purchased -- ' + str(how_many) + '\n'
         '\t\tTotal: ${0:.2f}'.format(total))
     return receipt
@@ -78,28 +78,46 @@ def return_item(which_one, how_many, condition):
         return receipt
 
 
-def update_inventory_remove(options, how_many):
-    """ str -> None
-    Update the file every time a new transaction is processed and will write it
+def update_inventory_remove(trans, option_name, how_many):
+    """ str -> str
+    Subtract from the file every time a new transaction is processed and will
+    write it to a .p (pickle) file.
+    Returns status string.
+    """
+    with open('inventory.p', 'rb') as fin:
+        data = pickle.load(fin)
+    if option_name in data:
+        data[option_name][0] = data[option_name][0] - how_many
+        # for item in data:
+        #     if trans == 'return':
+        #         if item[0] == option_name:
+        #             update = int(item[option_name][0]) - how_many
+        with open('inventory.p', 'wb') as fin:
+            pickle.dump(data, fin)
+        return 'Item successfully removed from inventory.\n'
+    else:
+        return 'Item not in inventory.\n'
+
+
+def update_inventory_add(trans, option_name, how_many):
+    """ str -> str
+    Add to the file every time a new transaction is processed and will write it
     to a .p (pickle) file.
+    Returns status string.
     """
     with open('inventory.p', 'rb') as fin:
         data = pickle.load(fin)
-        update = int(data[options][0]) - how_many
-    with open('inventory.p', 'wb') as fin:
-        pickle.dump(update, fin)
-    print(show_inventory())
-
-
-def update_inventory_add(options, how_many):
-    """
-    """
-    with open('inventory.p', 'rb') as fin:
-        data = pickle.load(fin)
-        update = int(data[options][0]) + how_many
-    with open('inventory.p', 'wb') as fin:
-        pickle.dump(update, fin)
-    print(show_inventory())
+    if option_name in data:
+        data[option_name][0] = data[option_name][0] + how_many
+        # for item in data:
+        #     if trans == 'return':
+        #         if item[0] == option_name:
+        #             update = int(item[option_name][0]) + how_many
+        with open('inventory.p', 'wb') as fin:
+            pickle.dump(data, fin)
+        return 'Item successfully added back to inventory.\n'
+    else:
+        return 'Item not in inventory.\n'
 
 
 def show_inventory():
@@ -117,4 +135,4 @@ def show_inventory():
         #  'yellow_slide_and_pool_combo': [5, 225, 625],
         #  'dolphin_slide': [5, 175, 550],
         #  'elephant_bouncer': [6, 225, 625]}
-        print(data)
+    print(data)
