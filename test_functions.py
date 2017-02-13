@@ -1,30 +1,16 @@
 import main
 
 
-def test_show_inventory():
-    assert main.show_inventory() == {
-        'jurassic_adventure_course': [2, 225, 625],
-        'sports_bouncer': [4, 100, 400],
-        '16"_wave_pool_slide': [4, 175, 550],
-        'giant_slip_and_dip': [2, 175, 500],
-        'castle_bouncer': [7, 100, 400],
-        'disney_princess_bouncer': [3, 100, 400],
-        'yellow_slide_and_pool_combo': [5, 225, 625],
-        'dolphin_slide': [5, 175, 550],
-        'elephant_bouncer': [6, 225, 625]
-    }
-
-
 def test_rent_item():
     assert main.rent_item('disney_princess_bouncer', 2, 2) == (
         '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
         '\n' + '2' + '\t' + 'disney_princess_bouncer' + '\n'
-        'Rented -- ' + '2' + '\n'
+        'Rented -- ' + '2' + ' days' + '\n'
         '\t\tTotal: $513.60')
     assert main.rent_item('jurassic_adventure_course', 1, 4) == (
         '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
         '\n' + '1' + '\t' + 'jurassic_adventure_course' + '\n'
-        'Rented -- ' + '4' + '\n'
+        'Rented -- ' + '4' + ' days' + '\n'
         '\t\tTotal: $1029.88')
 
 
