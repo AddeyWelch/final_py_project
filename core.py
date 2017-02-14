@@ -129,7 +129,7 @@ def update_inventory_add(trans, option_name, how_many):
 
 
 def show_inventory():
-    """ None -> dict
+    """ None -> str
     Allows the user to view what inventory is in stock.
     """
     with open('inventory.p', 'rb') as fin:
@@ -157,6 +157,10 @@ def show_inventory():
 
 
 def revenue_history(total):
+    """ float -> None
+    Add to the file every time a new transaction price is processed and will
+    write it to a .p (pickle) file.
+    """
     with open('revenue.p', 'rb') as fin:
         info = pickle.load(fin)
     total += info
@@ -165,7 +169,8 @@ def revenue_history(total):
 
 
 def view_revenue():
-    """
+    """ None -> float
+    Allows the user to view what the total revenue is.
     """
     with open('revenue.p', 'rb') as fin:
         info = pickle.load(fin)

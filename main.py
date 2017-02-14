@@ -34,7 +34,7 @@ def main():
 
 
 def administration():
-    """
+    """ None -> None
     Allows the user to view what is in inventory
     """
     show_inventory()
@@ -42,7 +42,7 @@ def administration():
 
 
 def customer():
-    """
+    """ None -> None
     Allows the user to complete a transaction in the program
     """
     trans = input(
@@ -61,7 +61,7 @@ def customer():
 
 
 def rent(trans):
-    """
+    """ str -> str
     Process if user selects customer & rent. Allows the customer to input
     what item they are renting along with quantity and how long they want to
     rent the item out for. Also, restriction for how long they can rent the
@@ -107,7 +107,7 @@ def rent(trans):
 
 
 def purchase(trans):
-    """
+    """ str -> str
     Process if user selects customer & purchase. Allows the customer to input
     what item they are purchase along with quantity. Also, restriction for how
     many items can be purchased.
@@ -144,7 +144,7 @@ def purchase(trans):
 
 
 def returns(trans):
-    """
+    """ str -> str
     Process if user selects customer & return. Allows the customer to input
     what item they are returning along with quantity. Also, this is where
     'replace' (damaged or not) takes place when the item is returned.
@@ -188,7 +188,7 @@ def returns(trans):
 
 
 def quit_program(who):
-    """
+    """ str -> None
     Quits the program entirely
     """
     if who == "q":
@@ -196,7 +196,7 @@ def quit_program(who):
 
 
 def rerun_program():
-    """
+    """ None -> str
     Continues the program if user inputs 'C' or quits the program if user
     inputs 'Q'
     """
