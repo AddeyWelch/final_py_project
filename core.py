@@ -96,10 +96,6 @@ def update_inventory_remove(trans, option_name, how_many):
         data = pickle.load(fin)
     if option_name in data:
         data[option_name][0] = data[option_name][0] - how_many
-        # for item in data:
-        #     if trans == 'return':
-        #         if item[0] == option_name:
-        #             update = int(item[option_name][0]) - how_many
         with open('inventory.p', 'wb') as fin:
             pickle.dump(data, fin)
         return 'Item successfully removed from inventory.\n'
@@ -117,10 +113,6 @@ def update_inventory_add(trans, option_name, how_many):
         data = pickle.load(fin)
     if option_name in data:
         data[option_name][0] = data[option_name][0] + how_many
-        # for item in data:
-        #     if trans == 'return':
-        #         if item[0] == option_name:
-        #             update = int(item[option_name][0]) + how_many
         with open('inventory.p', 'wb') as fin:
             pickle.dump(data, fin)
         return 'Item successfully added back to inventory.\n'
@@ -143,17 +135,17 @@ def show_inventory():
         #  'yellow_slide_and_pool_combo': [5, 225, 625],
         #  'dolphin_slide': [5, 175, 550],
         #  'elephant_bouncer': [6, 225, 625]}
-        for key, value in rental_fees.items():
-            key = key.replace('_', ' ').title()
-            # elephant_bouncer --> Elephant Bouncer
-            print('')
-            print(
-                'Name: {0}\n Stock: {1}\n Rent Price: {2}\n Replacement Price: {3}'.format(
-                    key, value[0], value[1], value[2]))
-            # Format of the dict --> 'Name: Castle Bouncer
-            # Stock: {7}
-            # Rent Price: {100}
-            # Replacement Price: {400}
+    for key, value in data.items():
+        key = key.replace('_', ' ').title()
+        # elephant_bouncer --> Elephant Bouncer
+        print('')
+        print(
+            'Name: {0}\n Stock: {1}\n Rent Price: {2}\n Replacement Price: {3}'.format(
+                key, value[0], value[1], value[2]))
+        # Format of the dict --> 'Name: Castle Bouncer
+        # Stock: {7}
+        # Rent Price: {100}
+        # Replacement Price: {400}
 
 
 def revenue_history(total):

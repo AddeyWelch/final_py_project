@@ -1,6 +1,7 @@
 from core import (show_inventory, rent_item, purchase_item, return_item,
                   update_inventory_add, update_inventory_remove, view_revenue)
 import sys
+import pickle
 
 rental_fees = {'castle_bouncer': [7, 100, 400],
                'sports_bouncer': [4, 100, 400],
@@ -68,7 +69,9 @@ def rent(trans):
     item and how many items that can be rented.
     """
     print('Please select one of the following:')
-    for key, value in rental_fees.items():
+    with open('inventory.p', 'rb') as fin:
+        data = pickle.load(fin)
+    for key, value in data.items():
         key = key.replace('_', ' ').title()
         # elephant_bouncer --> Elephant Bouncer
         print('{0} - {1} - ${2}'.format(key, value[0], value[1]))
@@ -83,6 +86,9 @@ def rent(trans):
             except:
                 print("That's not an integer..")
                 continue
+    else:
+        print('The item you have entered is not available.')
+        rent(trans)
     this = True
     while this:
         for num in str(how_many):
@@ -99,11 +105,8 @@ def rent(trans):
                     print(rent_item(option_name, how_many, how_long) + '\n')
                     print(update_inventory_remove(trans, option_name,
                                                   how_many))
-                    this = False
-                    rerun_program()
-    else:
-        print('The item you have entered is not available.')
-        rent(trans)
+                this = False
+                rerun_program()
 
 
 def purchase(trans):
@@ -113,7 +116,9 @@ def purchase(trans):
     many items can be purchased.
     """
     print('Please select one of the following:')
-    for key, value in rental_fees.items():
+    with open('inventory.p', 'rb') as fin:
+        data = pickle.load(fin)
+    for key, value in data.items():
         key = key.replace('_', ' ').title()
         # elephant_bouncer --> Elephant Bouncer
         print('{0} - {1} - ${2}'.format(key, value[0], value[2]))
@@ -128,6 +133,9 @@ def purchase(trans):
             except:
                 print("That's not an integer..")
                 continue
+    else:
+        print('The item you have entered is not available.')
+        purchase(trans)
     this = True
     while this:
         for num in str(how_many):
@@ -136,11 +144,8 @@ def purchase(trans):
             else:
                 print(purchase_item(option_name, how_many) + '\n')
                 print(update_inventory_remove(trans, option_name, how_many))
-                this = False
-                rerun_program()
-    else:
-        print('The item you have entered is not available.')
-        purchase(trans)
+            this = False
+            rerun_program()
 
 
 def returns(trans):
@@ -149,7 +154,9 @@ def returns(trans):
     what item they are returning along with quantity. Also, this is where
     'replace' (damaged or not) takes place when the item is returned.
     """
-    for key, value in rental_fees.items():
+    with open('inventory.p', 'rb') as fin:
+        data = pickle.load(fin)
+    for key, value in data.items():
         key = key.replace('_', ' ').title()
         # elephant_bouncer --> Elephant Bouncer
         print('{0}'.format(key))
