@@ -37,7 +37,7 @@ def administration():
     """
     Allows the user to view what is in inventory
     """
-    print(show_inventory())
+    show_inventory()
 
 
 def customer():
@@ -211,4 +211,4 @@ def rerun_program():
 
 
 if __name__ == '__main__':
-    print(main())
+    main()
