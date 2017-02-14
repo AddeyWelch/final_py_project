@@ -3,15 +3,15 @@ from core import (show_inventory, rent_item, purchase_item, return_item,
 import sys
 import pickle
 
-rental_fees = {'castle_bouncer': [7, 100, 400],
-               'sports_bouncer': [4, 100, 400],
-               'disney_princess_bouncer': [3, 100, 400],
-               '16"_wave_pool_slide': [4, 175, 550],
-               'dolphin_slide': [5, 175, 550],
-               'giant_slip_and_dip': [2, 175, 500],
-               'elephant_bouncer': [6, 225, 625],
-               'jurassic_adventure_course': [2, 225, 625],
-               'yellow_slide_and_pool_combo': [5, 225, 625]}
+data = {'castle_bouncer': [7, 100, 400],
+        'sports_bouncer': [4, 100, 400],
+        'disney_princess_bouncer': [3, 100, 400],
+        '16"_wave_pool_slide': [4, 175, 550],
+        'dolphin_slide': [5, 175, 550],
+        'giant_slip_and_dip': [2, 175, 500],
+        'elephant_bouncer': [6, 225, 625],
+        'jurassic_adventure_course': [2, 225, 625],
+        'yellow_slide_and_pool_combo': [5, 225, 625]}
 
 print('\n**Welcome to Bounce Into Fun!**\n')
 
@@ -61,6 +61,20 @@ def customer():
         customer()
 
 
+def input_one_of(choices):
+    """
+    Takes in a collection of strings
+    Ask user for input, checks if input is in the collection of strings
+    if not, prints invalid and restarts.
+    """
+    while True:
+        choice = input(', '.join(choices) + ': ')
+        if choice in choices:
+            return choice
+        else:
+            print('Invalid input')
+
+
 def rent(trans):
     """ str -> str
     Process if user selects customer & rent. Allows the customer to input
@@ -78,35 +92,20 @@ def rent(trans):
         # Format of the dict --> Castle Bouncer - 7 - $400
     option_name = input().strip().lower().replace(' ', '_')
     # Castle Bouncer --> castle_bouncer
-    if option_name in rental_fees:
-        while True:
-            try:
-                how_many = int(input('Quantity:').strip())
-                break
-            except:
-                print("That's not an integer..")
-                continue
+    if option_name in data:
+        max_available = data[option_name][0]
+        quantity_options = [str(n) for n in range(1, max_available + 1)]
+        print('How many would you like to rent?')
+        how_many = int(input_one_of(quantity_options))
+        date_options = [str(x) for x in range(1, 5)]
+        print('How long are you wanting to rent this item for?')
+        how_long = int(input_one_of(date_options))
+        print(rent_item(option_name, how_many, how_long) + '\n')
+        print(update_inventory_remove(trans, option_name, how_many))
     else:
         print('The item you have entered is not available.')
         rent(trans)
-    this = True
-    while this:
-        for num in str(how_many):
-            if num > str(rental_fees[option_name][0]):
-                print('This number is invalid, please try again!')
-                continue
-            else:
-                how_long = int(input(
-                    'How long are you wanting to rent this item for?').strip())
-                if how_long >= 5:
-                    print('You are limited to rent this item up to 4 days.')
-                    continue
-                else:
-                    print(rent_item(option_name, how_many, how_long) + '\n')
-                    print(update_inventory_remove(trans, option_name,
-                                                  how_many))
-                this = False
-                rerun_program()
+    rerun_program()
 
 
 def purchase(trans):
@@ -125,27 +124,17 @@ def purchase(trans):
         # Format of the dict --> Castle Bouncer - 7 - $400
     option_name = input().strip().lower().replace(' ', '_')
     # Castle Bouncer --> castle_bouncer
-    if option_name in rental_fees:
-        while True:
-            try:
-                how_many = int(input('Quantity:').strip())
-                break
-            except:
-                print("That's not an integer..")
-                continue
+    if option_name in data:
+        max_available = data[option_name][0]
+        quantity_options = [str(n) for n in range(1, max_available + 1)]
+        print('How many would you like to purchase?')
+        how_many = int(input_one_of(quantity_options))
+        print(purchase_item(option_name, how_many, how_long) + '\n')
+        print(update_inventory_remove(trans, option_name, how_many))
     else:
         print('The item you have entered is not available.')
         purchase(trans)
-    this = True
-    while this:
-        for num in str(how_many):
-            if num > str(rental_fees[option_name][0]):
-                print('This input is invalid, please try again!')
-            else:
-                print(purchase_item(option_name, how_many) + '\n')
-                print(update_inventory_remove(trans, option_name, how_many))
-            this = False
-            rerun_program()
+    rerun_program()
 
 
 def returns(trans):
@@ -164,18 +153,20 @@ def returns(trans):
     which_one = input('Which item are you returning?\n').strip().lower(
     ).replace(' ', '_')
     # Castle Bouncer --> castle_bouncer
-    if which_one in rental_fees:
-        while True:
-            try:
-                how_many = int(input('Quantity:').strip())
-                break
-            except:
-                print("That's not an integer..")
-                continue
+    if which_one in data:
+        max_available = data[option_name][0]
+        quantity_options = [str(n) for n in range(1, max_available + 1)]
+        print('How many items are you returning?')
+        how_many = int(input_one_of(quantity_options))
+        print(return_item(option_name, how_many, how_long) + '\n')
+        print(update_inventory_remove(trans, option_name, how_many))
+    else:
+        print('The item you have entered is not available.')
+        returns(trans)
         this = True
         while this:
             for num in str(how_many):
-                if num > str(rental_fees[which_one][0]):
+                if num > str(data[which_one][0]):
                     print('Please enter the correct number of items.')
                 else:
                     condition = input(
@@ -187,11 +178,8 @@ def returns(trans):
                         print(update_inventory_add(trans, which_one, how_many))
                     else:
                         print('You must enter y or n.')
-                    this = False
-                    rerun_program()
-    else:
-        print('The item you have entered is not available.')
-        returns(trans)
+                        this = False
+                        rerun_program()
 
 
 def quit_program(who):
