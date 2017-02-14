@@ -17,8 +17,7 @@ print('\n**Welcome to Bounce Into Fun!**\n')
 
 def main():
     """ str -> None
-    Contains some of the program's branching and all the functions parameters
-    ('inputs')
+    Contains some of the program's branching # and all the functions parameters
     """
     who = input(
         'Are you administration or customer?\n(Also, you can enter "q" to quit this program)\n').lower(
@@ -30,15 +29,21 @@ def main():
     elif who == 'q':
         quit_program(who)
     else:
-        return 'This input is invalid! Please try again'
+        print('This input is invalid! Please try again')
         main()
 
 
 def administration():
+    """
+    Allows the user to view what is in inventory
+    """
     print(show_inventory())
 
 
 def customer():
+    """
+    Allows the user to complete a transaction in the program
+    """
     trans = input(
         'Which transaction would you like to complete? (Enter RENT, PURCHASE, or RETURN)\n').strip(
         ).lower()
@@ -49,11 +54,18 @@ def customer():
     elif trans == 'return':
         returns(trans)
     else:
-        return "I'm sorry but this transaction can not be completed. Please try again."
+        print(
+            "I'm sorry but this transaction can not be completed. Please try again.")
         customer()
 
 
 def rent(trans):
+    """
+    Process if user selects customer & rent. Allows the customer to input
+    what item they are renting along with quantity and how long they want to
+    rent the item out for. Also, restriction for how long they can rent the
+    item and how many items that can be rented.
+    """
     print('Please select one of the following:')
     for key, value in rental_fees.items():
         key = key.replace('_', ' ').title()
@@ -79,7 +91,7 @@ def rent(trans):
             else:
                 how_long = int(input(
                     'How long are you wanting to rent this item for?').strip())
-                if how_long >= 4:
+                if how_long >= 5:
                     print('You are limited to rent this item up to 4 days.')
                     continue
                 else:
@@ -94,6 +106,11 @@ def rent(trans):
 
 
 def purchase(trans):
+    """
+    Process if user selects customer & purchase. Allows the customer to input
+    what item they are purchase along with quantity. Also, restriction for how
+    many items can be purchased.
+    """
     print('Please select one of the following:')
     for key, value in rental_fees.items():
         key = key.replace('_', ' ').title()
@@ -114,7 +131,7 @@ def purchase(trans):
     while this:
         for num in str(how_many):
             if num > str(rental_fees[option_name][0]):
-                return 'This input is invalid, please try again!'
+                print('This input is invalid, please try again!')
             else:
                 print(purchase_item(option_name, how_many) + '\n')
                 print(update_inventory_remove(trans, option_name, how_many))
@@ -126,6 +143,11 @@ def purchase(trans):
 
 
 def returns(trans):
+    """
+    Process if user selects customer & return. Allows the customer to input
+    what item they are returning along with quantity. Also, this is where
+    'replace' (damaged or not) takes place when the item is returned.
+    """
     for key, value in rental_fees.items():
         key = key.replace('_', ' ').title()
         # elephant_bouncer --> Elephant Bouncer
@@ -165,11 +187,18 @@ def returns(trans):
 
 
 def quit_program(who):
+    """
+    Quits the program entirely
+    """
     if who == "q":
         sys.exit(0)
 
 
 def rerun_program():
+    """
+    Continues the program if user inputs 'C' or quits the program if user
+    inputs 'Q'
+    """
     choice = input(
         'Would you like to continue the program or exist? (C or Q)\n').strip(
         ).lower()

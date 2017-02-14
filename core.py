@@ -121,7 +121,7 @@ def update_inventory_add(trans, option_name, how_many):
 
 
 def show_inventory():
-    """ None -> list
+    """ None -> dict
     Allows the user to view what inventory is in stock.
     """
     with open('inventory.p', 'rb') as fin:
