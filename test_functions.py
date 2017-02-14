@@ -38,7 +38,3 @@ def test_return_item():
         '\n' + '3' + '\t' + '16"_wave_pool_slide' + '\n'
         'Returned -- ' + '3' + '\n'
         '\t\tRefund Total: $55.00')
-
-# def test_update_inventory():
-#     assert main.test_update_inventory() ==
-#     assert main.test_update_inventory() ==
