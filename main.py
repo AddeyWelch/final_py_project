@@ -1,5 +1,5 @@
 from core import (show_inventory, rent_item, purchase_item, return_item,
-                  update_inventory_add, update_inventory_remove)
+                  update_inventory_add, update_inventory_remove, view_revenue)
 import sys
 
 rental_fees = {'castle_bouncer': [7, 100, 400],
@@ -38,6 +38,7 @@ def administration():
     Allows the user to view what is in inventory
     """
     show_inventory()
+    view_revenue()
 
 
 def customer():

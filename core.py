@@ -19,6 +19,11 @@ def init_inventory():
         pickle.dump(rental_fees, fin)
 
 
+def init_revenue():
+    with open('revenue.p', 'wb') as fin:
+        pickle.dump(0, fin)
+
+
 def rent_item(option_name, how_many, how_long):
     """ None -> str
     Display the items available to rent from. Allows the customer to select the
@@ -33,6 +38,7 @@ def rent_item(option_name, how_many, how_long):
         '\n' + str(how_many) + '\t' + option_name + '\n'
         'Rented -- ' + str(how_long) + ' days' + '\n'
         '\t\tTotal: ${0:.2f}'.format(total))
+    revenue_history(total)
     return receipt
 
 
@@ -49,6 +55,7 @@ def purchase_item(option_name, how_many):
         '\n' + str(how_many) + '\t' + option_name + '\n'
         'Purchased -- ' + str(how_many) + '\n'
         '\t\tTotal: ${0:.2f}'.format(total))
+    revenue_history(total)
     return receipt
 
 
@@ -75,6 +82,7 @@ def return_item(which_one, how_many, condition):
             '\n' + str(how_many) + '\t' + which_one + '\n'
             'Returned -- ' + str(how_many) + '\n'
             '\t\tRefund Total: ${0:.2f}'.format(total))
+        revenue_history(total)
         return receipt
 
 
@@ -135,4 +143,32 @@ def show_inventory():
         #  'yellow_slide_and_pool_combo': [5, 225, 625],
         #  'dolphin_slide': [5, 175, 550],
         #  'elephant_bouncer': [6, 225, 625]}
-    print(data)
+        for key, value in rental_fees.items():
+            key = key.replace('_', ' ').title()
+            # elephant_bouncer --> Elephant Bouncer
+            print('')
+            print(
+                'Name: {0}\n Stock: {1}\n Rent Price: {2}\n Replacement Price: {3}'.format(
+                    key, value[0], value[1], value[2]))
+            # Format of the dict --> 'Name: Castle Bouncer
+            # Stock: {7}
+            # Rent Price: {100}
+            # Replacement Price: {400}
+
+
+def revenue_history(total):
+    with open('revenue.p', 'rb') as fin:
+        info = pickle.load(fin)
+    total += info
+    with open('revenue.p', 'wb') as fin:
+        pickle.dump(total, fin)
+
+
+def view_revenue():
+    """
+    """
+    with open('revenue.p', 'rb') as fin:
+        info = pickle.load(fin)
+        print('')
+        print('This is the total revenue: ')
+    print(info)
