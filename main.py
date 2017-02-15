@@ -152,34 +152,21 @@ def returns(trans):
         # Format of the dict --> Castle Bouncer
     which_one = input('Which item are you returning?\n').strip().lower(
     ).replace(' ', '_')
+    print('Is the item you are returning damaged?')
+    condition = input_one_of(['yes', 'no'])
     # Castle Bouncer --> castle_bouncer
     if which_one in data:
-        max_available = data[option_name][0]
+        max_available = data[which_one][0]
         quantity_options = [str(n) for n in range(1, max_available + 1)]
         print('How many items are you returning?')
         how_many = int(input_one_of(quantity_options))
-        print(return_item(option_name, how_many, how_long) + '\n')
-        print(update_inventory_remove(trans, option_name, how_many))
-    else:
-        print('The item you have entered is not available.')
-        returns(trans)
-        this = True
-        while this:
-            for num in str(how_many):
-                if num > str(data[which_one][0]):
-                    print('Please enter the correct number of items.')
-                else:
-                    condition = input(
-                        'Is the item you are returning damaged? (y/n)\n').strip(
-                        ).lower()
-                    if condition == 'y' or condition == 'n':
-                        print(return_item(which_one, how_many, condition))
-                        print('')
-                        print(update_inventory_add(trans, which_one, how_many))
-                    else:
-                        print('You must enter y or n.')
-                        this = False
-                        rerun_program()
+        if condition == 'yes':
+            print(return_item(which_one, how_many, condition) + '\n')
+            print(update_inventory_remove(trans, which_one, how_many))
+        else:
+            print(return_item(which_one, how_many, condition) + '\n')
+            print(update_inventory_add(trans, which_one, how_many))
+    rerun_program()
 
 
 def quit_program(who):

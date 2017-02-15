@@ -65,7 +65,7 @@ def return_item(which_one, how_many, condition):
     the replacement value (10%) they paid to rent the item.
     """
     tax = 1.07
-    if condition == 'y':
+    if condition == 'yes':
         total = rental_fees[which_one][2] * how_many * tax
         # total = 400 * 2 * 1.07
         receipt = (
