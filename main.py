@@ -183,7 +183,7 @@ def rerun_program():
     inputs 'Q'
     """
     choice = input(
-        'Would you like to continue the program or exist? (C or Q)\n').strip(
+        'Would you like to continue the program or exit? (C or Q)\n').strip(
         ).lower()
     if choice == 'c':
         main()
