@@ -129,7 +129,7 @@ def purchase(trans):
         quantity_options = [str(n) for n in range(1, max_available + 1)]
         print('How many would you like to purchase?')
         how_many = int(input_one_of(quantity_options))
-        print(purchase_item(option_name, how_many, how_long) + '\n')
+        print(purchase_item(option_name, how_many) + '\n')
         print(update_inventory_remove(trans, option_name, how_many))
     else:
         print('The item you have entered is not available.')
