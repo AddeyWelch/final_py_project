@@ -28,12 +28,12 @@ def test_purchase_item():
 
 
 def test_return_item():
-    assert main.return_item('sports_bouncer', 1, 'y') == (
+    assert main.return_item('sports_bouncer', 1, 'yes') == (
         '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
         '\n' + '1' + '\t' + 'sports_bouncer' + '\n'
         'Returned Damaged -- ' + '1' + '\n'
         '\t\tTotal: $428.00')
-    assert main.return_item('16"_wave_pool_slide', 3, 'n') == (
+    assert main.return_item('16"_wave_pool_slide', 3, 'no') == (
         '******\nBOUNCE INTO FUN\nThank you for shopping with us!\n******'
         '\n' + '3' + '\t' + '16"_wave_pool_slide' + '\n'
         'Returned -- ' + '3' + '\n'
