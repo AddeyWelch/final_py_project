@@ -26,8 +26,7 @@ def init_revenue():
 
 def rent_item(option_name, how_many, how_long):
     """ None -> str
-    Display the items available to rent from. Allows the customer to select the
-    item of their choice and the quantity of that item and return the price.
+    Prints receipt to the customer of their transaction
     """
     tax = 1.07
     total = (rental_fees[option_name][1] * how_long +
@@ -44,8 +43,7 @@ def rent_item(option_name, how_many, how_long):
 
 def purchase_item(option_name, how_many):
     """ None -> str
-    Display the items available to purchase from. Allows the customer to select
-    the item of their choice and the quantity of that item.
+    Prints receipt to the customer of their transaction
     """
     tax = 1.07
     total = rental_fees[option_name][2] * how_many * tax
@@ -61,8 +59,7 @@ def purchase_item(option_name, how_many):
 
 def return_item(which_one, how_many, condition):
     """ None -> str
-    Allows the customer to return the item(s) they rented with the receipt of
-    the replacement value (10%) they paid to rent the item.
+    Prints receipt to the customer of their transaction
     """
     tax = 1.07
     if condition == 'yes':
